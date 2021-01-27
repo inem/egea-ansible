@@ -1,0 +1,4 @@
+---
+- include_tasks: aegae.yml
+- include_tasks: apache.yml
+- include_tasks: ftp.yml

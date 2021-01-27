@@ -1,0 +1,65 @@
+---
+- name: Create apache2.conf
+  template: src=templates/apache2.conf dest=/etc/apache2/apache2.conf
+  notify:
+    - restart apache2
+
+- name: Enable mod_rewrite
+  apache2_module: name=rewrite state=present
+  notify:
+    - restart apache2
+
+- name: apache2 listen on port {{ http_port }}
+  lineinfile: dest=/etc/apache2/ports.conf regexp="^Listen " line="Listen {{ http_port }}" state=present
+  notify:
+    - restart apache2
+
+- name: Create virtual host file
+  template: src=templates/virtualhost.conf dest=/etc/apache2/sites-available/{{ domain }}.conf
+
+- name: a2ensite {{ domain }}
+  command: a2ensite {{ domain }}
+  args:
+    creates: /etc/apache2/sites-enabled/{{ domain }}.conf
+  notify:
+    - restart apache2
+
+- name: a2dissite default
+  command: a2dissite 000-default
+  args:
+    creates: /etc/apache2/sites-disabled/000-default.conf
+  notify:
+    - restart apache2
+
+
+- name: apache2.conf
+  template: src=templates/apache2.conf dest=/etc/apache2/apache2.conf
+  notify:
+    - restart apache2
+
+- name: enabled mod_rewrite
+  apache2_module: name=rewrite state=present
+  notify:
+    - restart apache2
+
+- name: apache2 listen on port {{ http_port }}
+  lineinfile: dest=/etc/apache2/ports.conf regexp="^Listen " line="Listen {{ http_port }}" state=present
+  notify:
+    - restart apache2
+
+- name: create virtual host file
+  template: src=templates/virtualhost.conf dest=/etc/apache2/sites-available/{{ domain }}.conf
+
+- name: a2ensite {{ domain }}
+  command: a2ensite {{ domain }}
+  args:
+    creates: /etc/apache2/sites-enabled/{{ domain }}.conf
+  notify:
+    - restart apache2
+
+- name: a2dissite default
+  command: a2dissite 000-default
+  args:
+    creates: /etc/apache2/sites-disabled/000-default.conf
+  notify:
+    - restart apache2

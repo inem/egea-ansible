@@ -1,0 +1,32 @@
+---
+- name: Install vsftpd daemon
+  action: apt pkg=vsftpd state=present
+  tags: ftp
+
+- name: Create vsftpd.conf
+  action: template src=templates/vsftpd.conf dest=/etc/vsftpd.conf
+  tags: ftp
+
+- name: Create vsftpd.chroot_list
+  action: template src=templates/vsftpd.chroot_list dest=/etc/vsftpd.chroot_list
+  tags: ftp
+
+- name: Create user
+  user:
+    name: "{{ db_name }}"
+    update_password: on_create
+    password: "{{ db_password }}"
+    group: www-data
+
+- name: Set up home dir for ftp user
+  file:
+    src: "{{ path }}"
+    dest: /home/{{ db_name }}/website
+    state: link
+  notify:
+    - restart vsftpd
+
+- name: Disable pam_shells in vsftpd
+  lineinfile: dest=/etc/pam.d/vsftpd regexp="^auth   required        pam_shells.so" line="#auth   required        pam_shells.so" state=present
+  notify:
+    - restart vsftpd
