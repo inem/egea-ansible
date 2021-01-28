@@ -13,6 +13,12 @@
     state: present
     update_cache: yes
 
+- name: Create directory
+  file:
+    path: "{{ path }}"
+    state: directory
+    mode: 0755
+
 - name: Copy aegea
   unarchive:
     src: "{{ distrib }}"
@@ -20,7 +26,6 @@
     owner: www-data
     group: www-data
     creates: "{{ path }}/favicon.ico"
-    mode: 0755
     remote_src: True
 
 - name: Create aegea config
