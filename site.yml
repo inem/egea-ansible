@@ -1,4 +1,5 @@
 ---
-- roles:
+- hosts: all
+  roles:
     - role: web
     - role: db
