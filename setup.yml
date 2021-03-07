@@ -1,12 +1,12 @@
 - hosts: all
   remote_user: root
   vars:
-    db_name: e2
-    db_user: e2
-    db_password: secret
+    db_name: e2 
+    db_user: e2 
+    db_password: hpmor1 
 
-    email: email@example.com
-    distrib: http://blogengine.ru/download/e2_distr_v3082.zip #(beta)
+    email: lyamets.misha@gmail.com 
+    distrib: https://blogengine.ru/download/e2_distr_v3576.zip #(beta)
 
     path: /var/www/aegea
     domain: "{{ inventory_hostname }}"
@@ -30,21 +30,23 @@
 
   tasks:
   - name: Packages
-    apt: pkg={{item}} state=present update_cache=yes
-    with_items:
-    - unzip
-    - php5 
-    - php5-gd
-    - php5-mcrypt 
-    - php5-mysql
-    - apache2
-    - libapache2-mod-php5
-    - mysql-server
-    - libmysqlclient-dev
-    - python-mysqldb
+    apt:
+      pkg:
+        - unzip
+        - php 
+        - php-gd
+        - php-mysql
+        - php-mbstring
+        - apache2
+        - libapache2-mod-php
+        - mysql-server
+        - libmysqlclient-dev
+        - python-mysqldb
+      state: present
+      update_cache: yes
     
   - name: PHP | Configuration file, php.ini
-    action: template src=templates/php.ini dest=/etc/php5/apache2/php.ini
+    action: template src=templates/php.ini dest=/etc/php/7.2/apache2/php.ini
 
   ##
   # Mysql server setup.
@@ -138,7 +140,7 @@
   # FTP server setup.
   #
   - name: FTP | vsftpd daemon package
-    action: apt pkg=vsftpd state=installed
+    action: apt pkg=vsftpd state=present
     tags: ftp
 
   - name: FTP | Configuration setup
