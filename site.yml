@@ -4,3 +4,4 @@
     - role: web
     - role: db
     - role: felixfontein.acme_certificate
+    - role: acme

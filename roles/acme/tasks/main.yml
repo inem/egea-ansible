@@ -1,0 +1,24 @@
+---
+- name: copy private keys
+  copy:
+    src: keys/{{ item }}
+    dest: /etc/ssl/private/
+    owner: root
+    group: root
+    mode: "0400"
+  with_items:
+    - hpmor.lyamets.ninja-ecc.key
+  notify: restart apache2
+
+- name: copy certificates
+  copy:
+    src: keys/{{ item }}
+    dest: /etc/ssl/server-certs/
+    owner: root
+    group: root
+    mode: "0444"
+  with_items:
+    - hpmor.lyamets.ninja-ecc-rootchain.pem
+    - hpmor.lyamets.ninja-ecc-fullchain.pem
+    - hpmor.lyamets.ninja-ecc.pem
+  notify: restart apache2
