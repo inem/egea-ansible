@@ -1,0 +1,39 @@
+---
+- name: Install packages
+  apt:
+    pkg:
+      - unzip
+      - php
+      - php-gd
+      - php-mysql
+      - php-mbstring
+      - apache2
+      - libapache2-mod-php
+      - python-mysqldb
+    state: present
+    update_cache: yes
+
+- name: Create directory
+  file:
+    path: "{{ path }}"
+    state: directory
+    mode: 0755
+
+- name: Copy aegea
+  unarchive:
+    src: "{{ distrib }}"
+    dest: "{{ path }}"
+    owner: www-data
+    group: www-data
+    creates: "{{ path }}/favicon.ico"
+    remote_src: True
+
+- name: Create aegea config
+  template: src=templates/config.php dest={{ path }}/user/config.php
+
+- name: Set user and group
+  file:
+    path: /var/www
+    owner: www-data
+    group: www-data
+    recurse: Yes

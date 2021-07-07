@@ -1,0 +1,45 @@
+---
+
+acme_certificate_domains: [ 'hpmor.lyamets.ninja' ]
+acme_certificate_key_name: 'hpmor.lyamets.ninja-ecc'
+acme_certificate_algorithm: 'p-256'
+
+acme_certificate_acme_account: 'keys/acme-account.key'
+acme_certificate_acme_email: 'lyamets.misha@gmail.com'
+# For HTTP challenges:
+acme_certificate_server_location: '/var/www/challenges/'
+acme_certificate_http_challenge_user: root
+acme_certificate_http_challenge_group: http
+acme_certificate_http_challenge_folder_mode: "0755"
+acme_certificate_http_challenge_file_mode: "0644"
+
+dns_provider: ""
+
+db_name: e2
+db_user: e2
+db_password: hpmor1
+
+email: lyamets.misha@gmail.com
+distrib: https://blogengine.ru/download/e2_distr_v3576.zip #(beta)
+
+path: /var/www/aegea
+domain: "{{ inventory_hostname }}"
+http_port: 80
+
+# php.ini
+php_max_execution_time: '300'
+php_display_errors: 'On'
+php_display_startup_errors: 'On'
+php_html_errors: 'On'
+php_post_max_size: '128M'
+php_upload_max_filesize: '130M'
+php_memory_limit: '260M'
+php_date_timezone: 'US/Central'
+
+# vsftpd
+vsftpd_anonymous_enable: 'NO'
+vsftpd_local_enable: 'YES'
+vsftpd_write_enable: 'YES'
+vsftpd_local_umask: '077'
+
+
